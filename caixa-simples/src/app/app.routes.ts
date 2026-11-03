@@ -9,13 +9,15 @@ export const routes: Routes = [
         path: "cadastro",
         loadComponent: () =>
             import(`./pages/cadastro/cadastro`).then(x => x.Cadastro)
+    }, {
+        path: "login",
+        loadComponent: () =>
+            import(`./pages/login/login`).then(x => x.Login)
+    }, {
+        path: "home",
+        loadComponent:() =>
+            import(`./pages/home/home`).then(x => x.Home)
     }
 ];
 
 
-
-//  {
-//         path: "cursos/cadastrar",
-//         loadComponent: () =>
-//             import(`./pages/cursos/cadastro/cadastro`).then(x => x.CursoCadastroComponent)
-//     },

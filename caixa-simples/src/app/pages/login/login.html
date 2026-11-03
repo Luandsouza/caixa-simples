@@ -1,0 +1,80 @@
+<div class="min-h-screen flex items-center justify-center bg-slate-50 px-4 py-10">
+
+    <div class="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-6 shadow-xl shadow-slate-200/60 sm:p-9">
+
+        <!-- LOGO -->
+        <div class="flex justify-center">
+            <img src="/imagens/Logo fintech Caixa Simples.png" alt="Logo Caixa Simples"
+                class="h-50 w-auto object-contain">
+        </div>
+
+        <!-- APRESENTAÇÃO -->
+        <div class="mt-0 text-center">
+            <h1 class="text-2xl font-bold tracking-tight text-blue-700">
+                Bem-vindo de volta!
+            </h1>
+
+            <h3 class="mt-2 text-base font-normal text-slate-500">
+                Entre na sua conta para continuar.
+            </h3>
+        </div>
+
+        <!-- CAMPOS -->
+        <div class="mt-8 space-y-5">
+
+            <!-- EMAIL -->
+            <div>
+                <label for="campo-email" class="mb-2 block text-sm font-semibold text-slate-700">
+                    E-mail
+                </label>
+
+                <input type="email" id="campo-email" placeholder="seu@email.com"
+                    class="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-blue-600 focus:ring-4 focus:ring-blue-100">
+            </div>
+
+            <!-- SENHA -->
+            <div>
+                <label for="campo-senha" class="mb-2 block text-sm font-semibold text-slate-700">
+                    Senha
+                </label>
+
+                <input type="password" id="campo-senha" placeholder="Digite sua senha"
+                    class="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-blue-600 focus:ring-4 focus:ring-blue-100">
+            </div>
+
+        </div>
+
+        <!-- RECUPERAR SENHA -->
+        <div class="mt-3 flex justify-end">
+            <a routerLink="/recuperar-senha" class="text-sm font-semibold text-blue-600 transition hover:text-blue-700">
+                Esqueci minha senha
+            </a>
+        </div>
+
+        <!-- BOTÃO ENTRAR -->
+        <button type="button"
+            class="mt-8 w-full rounded-lg bg-blue-600 px-5 py-3.5 font-semibold text-white shadow-lg shadow-blue-600/20 transition hover:-translate-y-0.5 hover:bg-blue-700 active:translate-y-0">
+            Entrar na minha conta
+        </button>
+
+        <!-- CADASTRO -->
+        <div class="mt-6 border-t border-slate-100 pt-6 text-center">
+
+            <p class="text-sm text-slate-500">
+                Ainda não tem uma conta?
+
+                <a routerLink="/cadastro" class="font-semibold text-blue-600 transition hover:text-blue-700">
+                    Criar conta grátis
+                </a>
+            </p>
+
+        </div>
+
+        <!-- RODAPÉ -->
+        <p class="mt-8 text-center text-xs text-slate-400">
+            © 2026 Caixa Simples. Todos os direitos reservados.
+        </p>
+
+    </div>
+
+</div>
