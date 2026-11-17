@@ -1,0 +1,325 @@
+<div class="flex min-h-screen bg-slate-50">
+
+  <!-- NOTIFICAÇÃO -->
+  <div *ngIf="mostrarNotificacao" [ngClass]="{
+      'bg-emerald-600': tipoNotificacao === 'sucesso',
+      'bg-red-600': tipoNotificacao === 'erro'
+    }" class="fixed top-5 right-5 text-white px-6 py-4 rounded-xl shadow-xl flex items-center gap-3 z-[60]">
+    <span class="text-lg">
+      {{ tipoNotificacao === 'sucesso' ? '✓' : '!' }}
+    </span>
+    <span class="font-medium">{{ mensagem }}</span>
+  </div>
+
+  <!-- MENU LATERAL -->
+  <app-sidebar></app-sidebar>
+
+  <!-- ÁREA PRINCIPAL -->
+  <div class="flex-1 flex flex-col min-w-0">
+
+    <!-- BARRA SUPERIOR -->
+    <app-topbar></app-topbar>
+
+    <main class="flex-1 p-5 md:p-8">
+
+      <!-- CABEÇALHO -->
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+
+        <div>
+          <h1 class="text-2xl font-bold text-slate-800">
+            Movimentações
+          </h1>
+
+          <p class="text-sm text-slate-500 mt-1">
+            Gerencie todas as entradas e saídas do seu negócio.
+          </p>
+        </div>
+
+        <button (click)="abrirModal()"
+          class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-3 rounded-xl shadow-sm transition-colors flex items-center justify-center gap-2">
+          <span class="text-xl">+</span>
+          Nova movimentação
+        </button>
+
+      </div>
+
+      <!-- HISTÓRICO -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+
+        <div class="p-6 border-b border-slate-100">
+
+          <h2 class="text-lg font-bold text-slate-800">
+            Histórico de movimentações
+          </h2>
+
+          <p class="text-sm text-slate-500 mt-1">
+            Consulte e gerencie os lançamentos realizados.
+          </p>
+
+        </div>
+
+        <div class="overflow-x-auto">
+
+          <table class="w-full text-left">
+
+            <thead class="bg-slate-50">
+
+              <tr class="text-xs uppercase tracking-wider text-slate-500">
+
+                <th class="px-6 py-4 font-semibold">Data</th>
+                <th class="px-6 py-4 font-semibold">Descrição</th>
+                <th class="px-6 py-4 font-semibold">Categoria</th>
+                <th class="px-6 py-4 font-semibold">Pagamento</th>
+                <th class="px-6 py-4 font-semibold">Tipo</th>
+                <th class="px-6 py-4 font-semibold">Valor</th>
+                <th class="px-6 py-4 font-semibold text-center">Ações</th>
+
+              </tr>
+
+            </thead>
+
+            <tbody class="divide-y divide-slate-100">
+
+              @if (descricoes.length === 0) {
+
+              <tr>
+                <td colspan="7" class="px-6 py-16 text-center">
+
+                  <div class="flex flex-col items-center">
+
+                    <div
+                      class="w-14 h-14 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-2xl mb-4">
+                      $
+                    </div>
+
+                    <p class="font-semibold text-slate-700">
+                      Nenhuma movimentação cadastrada
+                    </p>
+
+                    <p class="text-sm text-slate-500 mt-1">
+                      Comece adicionando sua primeira entrada ou saída.
+                    </p>
+
+                  </div>
+
+                </td>
+              </tr>
+
+              } @else {
+
+              @for (descricao of descricoes; let i = $index; track i) {
+
+              <tr class="hover:bg-slate-50 transition-colors">
+
+                <td class="px-6 py-4 text-sm text-slate-500 whitespace-nowrap">
+                  {{ datas[i] }}
+                </td>
+
+                <td class="px-6 py-4 text-sm font-semibold text-slate-800">
+                  {{ descricao }}
+                </td>
+
+                <td class="px-6 py-4 text-sm text-slate-600 capitalize">
+                  {{ categorias[i] }}
+                </td>
+
+                <td class="px-6 py-4 text-sm text-slate-600 capitalize">
+                  {{ pagamentos[i] }}
+                </td>
+
+                <td class="px-6 py-4">
+
+                  <span [ngClass]="{
+                          'bg-emerald-50 text-emerald-700': tipos[i] === 'entrada',
+                          'bg-red-50 text-red-700': tipos[i] === 'saida'
+                        }" class="px-3 py-1.5 rounded-full text-xs font-semibold">
+                    {{ tipos[i] === 'entrada' ? 'Entrada' : 'Saída' }}
+                  </span>
+
+                </td>
+
+                <td [ngClass]="{
+                        'text-emerald-600': tipos[i] === 'entrada',
+                        'text-red-600': tipos[i] === 'saida'
+                      }" class="px-6 py-4 text-sm font-bold whitespace-nowrap">
+                  {{ tipos[i] === 'entrada' ? '+' : '-' }}
+                  R$ {{ valores[i] }}
+                </td>
+
+                <td class="px-6 py-4">
+
+                  <div class="flex items-center justify-center gap-2">
+
+                    <button (click)="preencherCampoEditar(descricao, categorias[i], tipos[i], pagamentos[i], valores[i]); abrirModal()"
+                      title="Editar movimentação"
+                      class="px-3 py-2 text-xs font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors">
+                      Editar
+                    </button>
+
+                    <button (click)="apagar(i)" title="Apagar movimentação"
+                      class="px-3 py-2 text-xs font-semibold text-red-600 bg-red-50 hover:bg-red-100 rounded-lg transition-colors">
+                      Apagar
+                    </button>
+
+                  </div>
+
+                </td>
+
+              </tr>
+
+              }
+
+              }
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </main>
+
+  </div>
+
+  <!-- MODAL -->
+  <div *ngIf="showModal"
+    class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+
+    <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden">
+
+      <!-- CABEÇALHO DO MODAL -->
+      <div class="px-6 py-5 border-b border-slate-100 flex items-center justify-between">
+
+        <div>
+
+          <h2 class="text-xl font-bold text-slate-800">
+            {{ indiceParaEditar === -1 ? 'Nova movimentação' : 'Editar movimentação' }}
+          </h2>
+
+          <p class="text-sm text-slate-500 mt-1">
+            Preencha as informações do lançamento.
+          </p>
+
+        </div>
+
+        <button (click)="fecharModal()"
+          class="w-9 h-9 rounded-lg text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition-colors text-xl"
+          title="Fechar">
+          ×
+        </button>
+
+      </div>
+
+      <!-- FORMULÁRIO -->
+      <div class="p-6 space-y-5">
+
+        <div>
+
+          <label for="campo-descricao" class="block text-sm font-semibold text-slate-700 mb-2">
+            Descrição
+          </label>
+
+          <input type="text" id="campo-descricao" [(ngModel)]="descricao" placeholder="Ex: Venda de produto"
+            class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all">
+
+        </div>
+
+        <div>
+
+          <label for="campo-categoria" class="block text-sm font-semibold text-slate-700 mb-2">
+            Categoria
+          </label>
+
+          <select id="campo-categoria" [(ngModel)]="categoria"
+            class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm bg-white outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all">
+
+            <option value="">Selecione uma categoria</option>
+            <option value="vendas">Vendas</option>
+            <option value="alimentacao">Alimentação</option>
+            <option value="transporte">Transporte</option>
+            <option value="servicos">Serviços</option>
+            <option value="outros">Outros</option>
+
+          </select>
+
+        </div>
+
+        <div>
+
+          <label for="campo-pagamento" class="block text-sm font-semibold text-slate-700 mb-2">
+            Pagamento
+          </label>
+
+          <select id="campo-pagamento" [(ngModel)]="pagamento"
+            class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm bg-white outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all">
+
+            <option value="">Selecione modo de pagamento</option>
+            <option value="dinheiro">Dinheiro</option>
+            <option value="pix">Pix</option>
+            <option value="debito">Débito</option>
+            <option value="credito">Crédito</option>
+
+          </select>
+
+        </div>
+
+        <div>
+
+          <label for="campo-tipo" class="block text-sm font-semibold text-slate-700 mb-2">
+            Tipo de movimentação
+          </label>
+
+          <select id="campo-tipo" [(ngModel)]="tipo"
+            class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm bg-white outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all">
+
+            <option value="" disabled>Selecione um tipo</option>
+            <option value="entrada">Entrada</option>
+            <option value="saida">Saída</option>
+
+          </select>
+
+        </div>
+
+        <div>
+
+          <label for="campo-valor" class="block text-sm font-semibold text-slate-700 mb-2">
+            Valor (R$)
+          </label>
+
+          <div class="relative">
+
+            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm">
+              R$
+            </span>
+
+            <input type="number" id="campo-valor" [(ngModel)]="valor" placeholder="0,00" min="0" step="0.01"
+              class="w-full pl-12 pr-4 py-3 border border-slate-200 rounded-xl text-sm outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all">
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- RODAPÉ DO MODAL -->
+      <div class="px-6 py-5 bg-slate-50 border-t border-slate-100 flex flex-col-reverse sm:flex-row justify-end gap-3">
+
+        <button (click)="fecharModal()"
+          class="px-5 py-3 rounded-xl border border-slate-200 bg-white text-slate-600 font-semibold text-sm hover:bg-slate-100 transition-colors">
+          Cancelar
+        </button>
+
+        <button (click)="salvar()"
+          class="px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm shadow-sm transition-colors">
+          {{ indiceParaEditar === -1 ? 'Salvar movimentação' : 'Salvar alterações' }}
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
